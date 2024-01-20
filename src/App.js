@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import SignIn from "./pages/SignIn";
-import Dashboard from "./pages/Dashboard";
+import DashboardNew from "./pages/DashboardNew";
+import DashboardArchived from "./pages/DashboardArchived";
 import Header from "./components/Header"; 
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -15,8 +16,11 @@ function App() {
     <Header/>
       <Routes>
         <Route path="/" element={<SignIn/>}/>
-        <Route path="/dashboard" element={<Dashboard/>}>
-        <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/dashboard/newleads" element={<PrivateRoute/>}>
+          <Route path="/dashboard/newleads" element={<DashboardNew/>}/>
+        </Route>
+        <Route path="/dashboard/archived" element={<PrivateRoute/>}>
+          <Route path="/dashboard/archived" element={<DashboardArchived/>}/>
         </Route>
       </Routes>
     </Router>

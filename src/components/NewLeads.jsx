@@ -1,13 +1,12 @@
-import React from 'react'
 import { useState, useEffect, useRef } from 'react'
+import {Link} from 'react-router-dom'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase.config'
-
 import { toast } from "react-toastify";
 
 
-function Table() {
+function NewLeads() {
     const auth = getAuth()
     const isMounted = useRef(true)
     const [allLeads, setAllLeads] = useState([])
@@ -91,9 +90,7 @@ function Table() {
 
   return (
     <div>
-        <h1 className='text-2xl font-bold text-center'>New Leads</h1>
-        <button className='btn lof-blue text-white'>Archived Leads</button>
-        <p className='text-end'>{`Updated On: ${currentDate}`}</p>
+        <hr />
         <div className="overflow-x-auto">
   <table className="table">
     {/* head */}
@@ -148,6 +145,7 @@ function Table() {
         <p>Account Type: {selectedLead.businessOrResidential}</p>
         <p>Selected Plan: {selectedLead.plan}</p>
         <p>Notes: {selectedLead.message}</p>
+        <p>Received: {selectedLead.submittedAt && new Date(selectedLead.submittedAt.toMillis()).toLocaleString()}</p>
       </>
     )}
     <hr />
@@ -174,4 +172,4 @@ function Table() {
   )
 }
 
-export default Table
+export default NewLeads

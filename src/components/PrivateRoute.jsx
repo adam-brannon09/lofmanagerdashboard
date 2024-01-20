@@ -8,7 +8,7 @@ const PrivateRoute = () => {
     const { loggedIn, checkingStatus } = useAuthStatus()
     // if checkingStatus is true, a loading message is rendered
     if (checkingStatus) {
-        return <Skeleton />
+        return (<h1>Loading...</h1>)
     }
     // if logged in the outlet is rendered. in app.js the outlet is the NoteScreen component, lines 20-22
     return loggedIn ? <Outlet /> : <Navigate to='/note' />
