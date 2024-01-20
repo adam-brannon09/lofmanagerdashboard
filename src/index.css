@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.lof-blue {
+	background-color: #161269;
+}
+
+.lof-blue-text {
+	color: #161269;
+}
+
+.lof-red {
+	background-color: #d90d00;
+}
+
+/* Modal Styles */
