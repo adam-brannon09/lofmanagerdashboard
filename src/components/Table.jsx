@@ -1,9 +1,10 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase.config'
 
+import { toast } from "react-toastify";
 
 
 function Table() {
@@ -11,8 +12,9 @@ function Table() {
     const isMounted = useRef(true)
     const [allLeads, setAllLeads] = useState([])
     const [selectedLead, setSelectedLead] = useState(null)
+    const [repAssigned, setRepAssigned] = useState('')
    
-    
+    const currentDate = new Date();
     
    
 
@@ -39,6 +41,49 @@ function Table() {
         setSelectedLead(lead);
         document.getElementById('my_modal_2').showModal();
       };
+      const handleChange = (e) => {
+        setRepAssigned(e.target.value);
+        };
+
+
+      const saveAssignment = async () => {
+        try {
+          // Check if a sales rep is selected
+          if (repAssigned) {
+            // Add the lead to the "archived" collection with sales rep and timestamp
+            const archivedLead = {
+              ...selectedLead,
+              salesRep: repAssigned,
+              archivedTimestamp: serverTimestamp(),
+            };
+    
+            // Add the lead to the "archived" collection
+            const archivedLeadRef = await addDoc(collection(db, 'archived'), archivedLead);
+    
+            console.log('Lead assigned and archived with ID:', archivedLeadRef.id);
+            // Delete the lead from the "leads" collection
+            await deleteDoc(doc(db, 'leads', selectedLead.id));
+
+            console.log('Lead deleted from "leads" collection.');
+            
+            // Update the state to remove the archived lead from the table
+            setAllLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== selectedLead.id));
+
+            // Close the modal
+            document.getElementById('my_modal_2').close();
+            // Show a toast message
+            toast.success('Lead assigned and archived successfully!');
+
+          } else {
+            toast.error('Please select a sales rep before saving assignment.');
+            console.error('Please select a sales rep before saving assignment.');
+          }
+        } catch (error) {
+            toast.error('Error saving assignment.');
+          console.error('Error saving assignment:', error);
+        }
+      };
+
 
 
     
@@ -46,6 +91,9 @@ function Table() {
 
   return (
     <div>
+        <h1 className='text-2xl font-bold text-center'>New Leads</h1>
+        <button className='btn lof-blue text-white'>Archived Leads</button>
+        <p className='text-end'>{`Updated On: ${currentDate}`}</p>
         <div className="overflow-x-auto">
   <table className="table">
     {/* head */}
@@ -63,10 +111,9 @@ function Table() {
       </tr>
     </thead>
     <tbody>
-      {/* row 1 */}
 
-      {/* Open the modal using document.getElementById('ID').showModal() method */}
 
+      {/* leads will be mapped through and turned into rows. lead notes will be visible in the modal*/}
 
     {allLeads.map((lead) => (
         <tr key={lead.id} className='hover'
@@ -88,13 +135,14 @@ function Table() {
   </table>
 </div>
 
+{/* modal */}
 <dialog id="my_modal_2" className="modal">
   <div className="modal-box">
     <h3 className="font-bold text-lg">{selectedLead && `${selectedLead.firstName} ${selectedLead.lastName}`}</h3>
     <hr />
     {selectedLead && (
       <>
-        <p>Address: {`${selectedLead.streetAddress} ${selectedLead.city} ${selectedLead.state} ${selectedLead.zipCode}`}</p>
+        <p>Address: {`${selectedLead.streetAddress}, ${selectedLead.city}, ${selectedLead.state} ${selectedLead.zipCode}`}</p>
         <p>Email: {selectedLead.email}</p>
         <p>Phone: {selectedLead.phone}</p>
         <p>Account Type: {selectedLead.businessOrResidential}</p>
@@ -102,13 +150,26 @@ function Table() {
         <p>Notes: {selectedLead.message}</p>
       </>
     )}
-
-    <button className="btn lof-blue text-white" onClick={() => document.getElementById('my_modal_2').close()}>Close</button>
+    <hr />
+    <div className='mt-8'>
+    <label className="form-control w-full max-w-xs">
+  <div className="label">
+    <span className="label-text">Assign To Rep</span>
+  </div>
+  <select 
+  className="select select-bordered"
+  value={repAssigned}
+  onChange={handleChange}>
+    <option value="" selected>Select a Rep to Assign Lead</option>
+    <option value="adam.brannon09@icloud.com">Adam Brannon</option>
+  </select>
+  
+</label>
+    </div>
+    <button className='btn lof-blue text-white' onClick={saveAssignment} >Save Assignment</button>
+    <button className="btn lof-red text-white mt-8" onClick={() => document.getElementById('my_modal_2').close()}>Close</button>
   </div>
 </dialog>
-
-
-
     </div>
   )
 }
