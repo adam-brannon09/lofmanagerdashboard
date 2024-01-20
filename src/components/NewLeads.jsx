@@ -12,6 +12,7 @@ function NewLeads() {
     const [allLeads, setAllLeads] = useState([])
     const [selectedLead, setSelectedLead] = useState(null)
     const [repAssigned, setRepAssigned] = useState('')
+    const [leadNums, setLeadNums] = useState(0)
    
     const currentDate = new Date();
     
@@ -26,6 +27,7 @@ function NewLeads() {
                     console.log(doc.data());
                     leads.push({ ...doc.data(), id: doc.id });
                 });
+                setLeadNums(leads.length)
                 setAllLeads(leads);
             } catch (error) {
                 console.error(error);
@@ -91,6 +93,7 @@ function NewLeads() {
   return (
     <div>
         <hr />
+        <p className='text-end mr-6'>{leadNums > 1 ? `${leadNums} leads` : `${leadNums} lead`}</p>
         <div className="overflow-x-auto">
   <table className="table">
     {/* head */}

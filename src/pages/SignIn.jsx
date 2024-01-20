@@ -39,7 +39,7 @@ function SignIn() {
       );
       if (userCredential.user) {
         toast.success("Signed in successfully");
-        navigate("/dashboard");
+        navigate("/dashboard/newleads");
       }
     } catch (error) {
       console.log(error);
@@ -51,7 +51,7 @@ function SignIn() {
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <form className="card-body" onSubmit={handleSubmit}>
+          <form className="card-body mb-20" onSubmit={handleSubmit}>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>

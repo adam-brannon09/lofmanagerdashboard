@@ -10,7 +10,7 @@ function DashboardNew() {
     <hr />
     <div className='flex justify-between my-10 mx-4'>
 
-        <Link to="/dashboard/archived" className='btn lof-blue text-white'>Archived Leads</Link>
+        <Link to="/dashboard/archived" className='btn lof-blue text-white'>Assigned Leads</Link>
         <h1 className='text-2xl font-bold text-center'>New Leads</h1>
         <Time />
         </div>

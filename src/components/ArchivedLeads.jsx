@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 function Archived() {
   const [allLeads, setAllLeads] = useState([])
   const [selectedLead, setSelectedLead] = useState(null)
+  const [leadNums, setLeadNums] = useState(0)
 
 
   useEffect(() => {
@@ -20,6 +21,7 @@ function Archived() {
                 leads.push({ ...doc.data(), id: doc.id });
             });
             setAllLeads(leads);
+            setLeadNums(leads.length)
         } catch (error) {
             console.error(error);
         }
@@ -40,6 +42,7 @@ const openModal = (lead) => {
   return (
     <div>
     <hr />
+    <p className='text-end mr-6'>{leadNums > 1 ? `${leadNums} leads` : `${leadNums} lead`}</p>
     <div className="overflow-x-auto">
 <table className="table">
 {/* head */}
@@ -92,6 +95,7 @@ const openModal = (lead) => {
     <p>Account Type: {selectedLead.businessOrResidential}</p>
     <p>Selected Plan: {selectedLead.plan}</p>
     <p>Notes: {selectedLead.message}</p>
+    <p>Assigned On: {selectedLead.archivedTimestamp && new Date(selectedLead.archivedTimestamp.toMillis()).toLocaleString()}</p>
   </>
 )}
 <hr />
