@@ -42,7 +42,10 @@ const openModal = (lead) => {
   return (
     <div>
     <hr />
-    <p className='text-end mr-6'>{leadNums > 1 ? `${leadNums} leads` : `${leadNums} lead`}</p>
+    <div className='flex justify-end'>
+    
+    <p className='text-end mr-6 ml-4'>{leadNums > 1 ? `${leadNums} leads` : `${leadNums} lead`}</p>
+    </div>
     <div className="overflow-x-auto">
 <table className="table">
 {/* head */}

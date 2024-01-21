@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { db } from "../firebase.config";
-import Logo from "../assets/images/liveOakLogo.png";
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,7 +11,6 @@ function SignIn() {
     password: "",
   });
 
-  const isSmallScreen = window.matchMedia("(max-width: 500px)").matches;
 
   const { email, password } = formData;
   const navigate = useNavigate();
@@ -38,7 +36,7 @@ function SignIn() {
         password
       );
       if (userCredential.user) {
-        toast.success("Signed in successfully");
+        // toast.success("Signed in successfully");
         navigate("/dashboard/newleads");
       }
     } catch (error) {
@@ -79,11 +77,6 @@ function SignIn() {
                 required
                 onChange={handleChange}
               />
-              {/* <label className="label">
-                <a href="#" className="label-text-alt link link-hover">
-                  Forgot password?
-                </a>
-              </label> */}
             </div>
             <div className="form-control mt-6">
               <button className="btn lof-blue text-white">Login</button>

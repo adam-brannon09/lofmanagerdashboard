@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
-import {Link} from 'react-router-dom'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase.config'
 import { toast } from "react-toastify";
-
+import { FaRedoAlt } from "react-icons/fa";
 
 function NewLeads() {
     const auth = getAuth()
@@ -13,10 +12,7 @@ function NewLeads() {
     const [selectedLead, setSelectedLead] = useState(null)
     const [repAssigned, setRepAssigned] = useState('')
     const [leadNums, setLeadNums] = useState(0)
-   
-    const currentDate = new Date();
     
-   
 
     useEffect(() => {
         const fetchLeads = async () => {
@@ -85,6 +81,9 @@ function NewLeads() {
         }
       };
 
+      const handleRefresh = () => {
+        window.location.reload()
+      }
 
 
     
@@ -93,7 +92,10 @@ function NewLeads() {
   return (
     <div>
         <hr />
-        <p className='text-end mr-6'>{leadNums > 1 ? `${leadNums} leads` : `${leadNums} lead`}</p>
+        <div className='flex justify-end'>
+        <button alt="Refresh Leads" onClick={handleRefresh}><FaRedoAlt /></button>
+        <p className='text-end mr-6 ml-4'>{leadNums > 1 ? `${leadNums} leads` : `${leadNums} lead`}</p>
+        </div>
         <div className="overflow-x-auto">
   <table className="table">
     {/* head */}
