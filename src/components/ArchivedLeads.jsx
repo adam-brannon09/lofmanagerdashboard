@@ -17,6 +17,8 @@ function Archived() {
             querySnapshot.forEach((doc) => {
                 console.log(doc.data());
                 leads.push({ ...doc.data(), id: doc.id });
+                      // Sort the leads based on archivedTimestamp (newest to oldest)
+                leads.sort((a, b) => b.archivedTimestamp.toMillis() - a.archivedTimestamp.toMillis());
             });
             setAllLeads(leads);
             setLeadNums(leads.length)
