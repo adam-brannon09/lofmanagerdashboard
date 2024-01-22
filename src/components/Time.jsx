@@ -24,11 +24,6 @@ function Time() {
     
     // Format the date to include only day of the week, month, day, year, and time up to the minute
     const formattedDateTime = formatToMinute(currentDate);
-    
-    // Display the formatted date and time
-    console.log('Formatted Date and Time:', formattedDateTime);
-    
-
   return (
     <>
         <p className='text-end'>{`Updated On: ${formattedDateTime}`}</p>

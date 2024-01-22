@@ -1,18 +1,16 @@
-import { useState, useEffect, useRef } from 'react'
-import {Link} from 'react-router-dom'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore'
+import { useState, useEffect } from 'react'
+import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../firebase.config'
-import { toast } from "react-toastify";
 
 function Archived() {
   const [allLeads, setAllLeads] = useState([])
   const [selectedLead, setSelectedLead] = useState(null)
   const [leadNums, setLeadNums] = useState(0)
-
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetchLeads = async () => {
+        setLoading(true)
         try {
             const querySnapshot = await getDocs(collection(db, 'archived'));
             const leads = [];
@@ -22,6 +20,7 @@ function Archived() {
             });
             setAllLeads(leads);
             setLeadNums(leads.length)
+            setLoading(false)
         } catch (error) {
             console.error(error);
         }
@@ -40,34 +39,38 @@ const openModal = (lead) => {
 
 
   return (
-    <div>
+    <div className='mb-20'>
     <hr />
     <div className='flex justify-end'>
+    <p className='text-end mr-6 ml-4'>
+  {leadNums === 0 ? '0 Leads Assigned' : leadNums > 1 ? `${leadNums} Leads Assigned` : `${leadNums} Lead Assigned`}
+</p>
+
+   
     
-    <p className='text-end mr-6 ml-4'>{leadNums > 1 ? `${leadNums} leads` : `${leadNums} lead`}</p>
     </div>
     <div className="overflow-x-auto">
-<table className="table">
-{/* head */}
-<thead>
-  <tr>
-    <th>Name</th>
-    <th>E-Mail</th>
-    <th>Phone</th>
-    <th>Street</th>
-    <th>Account Type</th>
-    <th>Plan Selected</th>
-    <th>Assigned Rep</th>
-    <th>Assigned On</th>
-  </tr>
-</thead>
-<tbody>
+        <table className="table">
+        {/* head */}
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>E-Mail</th>
+            <th>Phone</th>
+            <th>Street</th>
+            <th>Account Type</th>
+            <th>Plan Selected</th>
+            <th>Assigned Rep</th>
+            <th>Assigned On</th>
+          </tr>
+        </thead>
+        <tbody>
 
 
   {/* leads will be mapped through and turned into rows. lead notes will be visible in the modal*/}
 
 {allLeads.map((lead) => (
-    <tr key={lead.id} className='hover'
+    <tr key={lead.id} className='hover cursor-pointer'
     onClick={() => openModal(lead)}
     >
     <td>{`${lead.firstName} ${lead.lastName}`}</td>
@@ -98,6 +101,7 @@ const openModal = (lead) => {
     <p>Account Type: {selectedLead.businessOrResidential}</p>
     <p>Selected Plan: {selectedLead.plan}</p>
     <p>Notes: {selectedLead.message}</p>
+    <p>Assigned Rep: {selectedLead.salesRep}</p>
     <p>Assigned On: {selectedLead.archivedTimestamp && new Date(selectedLead.archivedTimestamp.toMillis()).toLocaleString()}</p>
   </>
 )}
@@ -106,6 +110,7 @@ const openModal = (lead) => {
 <button className="btn lof-red text-white mt-8" onClick={() => document.getElementById('my_modal_2').close()}>Close</button>
 </div>
 </dialog>
+<hr />
 </div>
   )
 }
