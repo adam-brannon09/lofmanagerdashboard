@@ -7,24 +7,33 @@ import { FaRedoAlt } from "react-icons/fa";
 
 function NewLeads() {
     const auth = getAuth()
-    const isMounted = useRef(true)
+    
     const [allLeads, setAllLeads] = useState([])
     const [selectedLead, setSelectedLead] = useState(null)
     const [repAssigned, setRepAssigned] = useState('')
     const [leadNums, setLeadNums] = useState(0)
     
+    
+
+    
+    
 
     useEffect(() => {
         const fetchLeads = async () => {
             try {
+              
                 const querySnapshot = await getDocs(collection(db, 'leads'));
                 const leads = [];
                 querySnapshot.forEach((doc) => {
-                    console.log(doc.data());
+                    console.log("lead found");
                     leads.push({ ...doc.data(), id: doc.id });
+                    
                 });
+                
                 setLeadNums(leads.length)
                 setAllLeads(leads);
+                console.log("leads set")
+                
             } catch (error) {
                 console.error(error);
             }
@@ -36,8 +45,10 @@ function NewLeads() {
     
     const openModal = (lead) => {
         setSelectedLead(lead);
+        console.log("selectedLead set")
         document.getElementById('my_modal_2').showModal();
       };
+
       const handleChange = (e) => {
         setRepAssigned(e.target.value);
         };
@@ -81,9 +92,7 @@ function NewLeads() {
         }
       };
 
-      const handleRefresh = () => {
-        window.location.reload()
-      }
+      
 
 
     
@@ -93,7 +102,7 @@ function NewLeads() {
     <div>
         <hr />
         <div className='flex justify-end'>
-        <button alt="Refresh Leads" onClick={handleRefresh}><FaRedoAlt /></button>
+        {/* <button alt="Refresh Leads" onClick={handleRefresh}><FaRedoAlt /></button> */}
         <p className='text-end mr-6 ml-4'>{leadNums > 1 ? `${leadNums} leads` : `${leadNums} lead`}</p>
         </div>
         <div className="overflow-x-auto">
@@ -163,7 +172,7 @@ function NewLeads() {
   className="select select-bordered"
   value={repAssigned}
   onChange={handleChange}>
-    <option value="" selected>Select a Rep to Assign Lead</option>
+    <option value="">Select a Rep to Assign Lead</option>
     <option value="adam.brannon09@icloud.com">Adam Brannon</option>
   </select>
   
