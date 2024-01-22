@@ -103,6 +103,7 @@ const openModal = (lead) => {
     <p>Account Type: {selectedLead.businessOrResidential}</p>
     <p>Selected Plan: {selectedLead.plan}</p>
     <p>Notes: {selectedLead.message}</p>
+    <p>Lead Received:{selectedLead.submittedAt && new Date(selectedLead.submittedAt.toMillis()).toLocaleString()}</p>
     <p>Assigned Rep: {selectedLead.salesRep}</p>
     <p>Assigned On: {selectedLead.archivedTimestamp && new Date(selectedLead.archivedTimestamp.toMillis()).toLocaleString()}</p>
   </>
