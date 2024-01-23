@@ -210,7 +210,7 @@ function NewLeads() {
         <p>Phone: {selectedLead.phone}</p>
         <p>Account Type: {selectedLead.businessOrResidential}</p>
         <p>Selected Plan: {selectedLead.plan}</p>
-        <p>Notes: {selectedLead.message}</p>
+        <p>Notes: {selectedLead.message ? selectedLead.message : `No notes from lead.`}</p>
         <p>Received: {selectedLead.submittedAt && new Date(selectedLead.submittedAt.toMillis()).toLocaleString()}</p>
       </>
     )}
