@@ -55,7 +55,7 @@ To use the web-based version simply navigate to the deployed application [URL](h
 ## Demo
 
 
-<img src="./src/assets/images/formGif.gif" style="width:900px;height:auto">
+<img src="./src/assets/images/lofdashboard.gif" style="width:900px;height:auto">
 
 Follow me to the [Deployed Application](https://lofmanagerdashboard.vercel.app/)
 

@@ -227,6 +227,7 @@ function NewLeads() {
     <option value="">Select a Rep to Assign Lead</option>
     <option value="adam.brannon09@icloud.com">Adam Brannon</option>
     <option value="amber.brannon@liveoakfiber.com">Amber Brannon</option>
+    <option value="joey.broadway@liveoakfiber.com">Joey Broadway</option>
   </select>
   
 </label>
