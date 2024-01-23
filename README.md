@@ -1,70 +1,82 @@
-# Getting Started with Create React App
+<div align="center">
+<img src="https://forthebadge.com/images/badges/made-with-javascript.svg" alt="js">
+<img src="https://forthebadge.com/images/badges/makes-people-smile.svg" alt="smile">
+<img src="https://forthebadge.com/images/badges/powered-by-coffee.svg" alt="coffee">
+<img src="https://forthebadge.com/images/badges/ctrl-c-ctrl-v.svg" alt="ctrl_c">
+<img src="https://forthebadge.com/images/badges/not-a-bug-a-feature.svg" alt="bug">
+<img src="https://forthebadge.com/images/badges/license-mit.svg" alt="mit">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+</div>
 
-## Available Scripts
+          
+          
+# Live Oak Fiber Leads Dashboard
 
-In the project directory, you can run:
+## Description
 
-### `npm start`
+Welcome to the Live Oak Fiber Lead Dashboard, a user-friendly tool designed for efficient lead management. This dashboard provides a centralized view of captured leads from a [custom form](https://live-oak-form.vercel.app/), displaying crucial information such as name, email, phone number, address, lead message, and creation date. Its intuitive interface ensures easy navigation. Once leads are assigned to sales reps, they are separated into another list displaying the lead information, the sales rep assigned, and the time they were assigned. The process is further streamlined with an automatically generated email prompt, enabling managers to add personalized comments before sending. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Quick Links
 
-### `npm test`
+- [Installation](#installation)
+  
+- [Usage](#usage)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [Technologies](#technologies)
 
-### `npm run build`
+- [Demo](#demo)
+  
+- [Contributors](#contributors)
+  
+- [Feedback and Support](#feedback-and-support)
+  
+- [License](#license)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+No install required for the web-based version. To run the application locally, clone the repository to your local machine
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Usage
 
-### `npm run eject`
+To use the web-based version simply navigate to the deployed application [URL](https://lofmanagerdashboard.vercel.app/) and begin using the app in your browser.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Technologies
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+<div style="display:flex; align-items:center">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" style="width:100px;height:auto;padding:50px;"/>
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" style="width:100px;height:auto;padding:50px;"/>
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" style="width:100px;height:auto;padding:50px;color:white;"/>
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain-wordmark.svg" style="width:100px;height:auto;padding:50px;"/>
+</div>          
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+## Demo
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<img src="./src/assets/images/formGif.gif" style="width:900px;height:auto">
 
-### Code Splitting
+Follow me to the [Deployed Application](https://lofmanagerdashboard.vercel.app/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+## Contributors
+Adam Brannon
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+[Check me out on Github](https://github.com/adam-brannon09)
 
-### Making a Progressive Web App
+[Email Me](mailto:adam.brannon09@icloud.com)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+## Feedback and Support
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+If you encounter any issues while viewing the Live Oak Contact Request Form or have any suggestions for improvement, please [open an issue](https://github.com/adam-brannon09/lofmanagerdashboard/issues) on the GitHub repository. I appreciate your feedback and will address any concerns as soon as possible.
 
-### Deployment
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Live Oak Contact Form is released under the [MIT License](https://opensource.org/licenses/MIT). You are free to use, modify, and distribute this application as per the terms of this license.
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<div align="center">
+    <img src="https://forthebadge.com/images/badges/built-by-developers.svg" />
+</div>
