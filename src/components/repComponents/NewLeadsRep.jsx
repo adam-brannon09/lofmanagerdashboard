@@ -4,8 +4,8 @@ import { collection, getDoc, getDocs, addDoc, deleteDoc, doc, serverTimestamp } 
 import { db } from '../../firebase.config'
 import { toast } from "react-toastify";
 import { FaRedoAlt } from "react-icons/fa";
-import StatusBar from '../StatusBar';
-import NewLeadsTable from '../NewLeadsTable';
+import StatusBar from '../nonUserComponents/StatusBar';
+import LeadsTable from '../nonUserComponents/LeadsTable';
 import RepModal from './RepModal';
 
 
@@ -129,7 +129,7 @@ const [userName, setUserName] = useState('');
           
     
             // Add the lead to the "archived" collection
-            const contactedLeadRef = await addDoc(collection(db, `${collectionName}contacted`), contactedLead);
+            const contactedLeadRef = await addDoc(collection(db, `${collectionName}Contacted`), contactedLead);
     
             console.log('Lead assigned and archived with ID:', contactedLeadRef.id);
             // Delete the lead from the "leads" collection
@@ -163,7 +163,7 @@ const [userName, setUserName] = useState('');
   return (
     <div>
        <StatusBar handleRefresh={handleRefresh} leadNums={leadNums}/>
-       <NewLeadsTable allLeads={allLeads} openModal={openModal}/>
+       <LeadsTable allLeads={allLeads} openModal={openModal}/>
          <RepModal 
          selectedLead={selectedLead} 
         //  repAssigned={repAssigned} 

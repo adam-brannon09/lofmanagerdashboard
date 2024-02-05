@@ -1,4 +1,5 @@
-import ArchivedLeads from "../components/ArchivedLeads"
+import ArchivedLeads from "../components/adminComponents/ArchivedLeads"
+import ContactedLeads from "../components/repComponents/ContactedLeads"
 import Time from '../components/nonUserComponents/Time'
 import { Link } from 'react-router-dom'
 

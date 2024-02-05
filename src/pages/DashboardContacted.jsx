@@ -1,16 +1,15 @@
-import { Link } from 'react-router-dom'
-import NewLeadsRep from '../components/repComponents/NewLeadsRep'
-import NewLeadsAdmin from '../components/adminComponents/NewLeadsAdmin'
+import ContactedLeads from "../components/repComponents/ContactedLeads"
 import Time from '../components/nonUserComponents/Time'
+import { Link } from 'react-router-dom'
 import { useEffect, useState } from "react"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { getDoc, doc } from "firebase/firestore"
 import { db } from "../firebase.config"
 
-function DashboardNew() {
+function DashboardContacted() {
 
-  const [user, setUser] = useState(null)
-const [isAdmin, setIsAdmin] = useState(false)
+const [user, setUser] = useState(null)
+
 const [signedIn, setSignedIn] = useState(false);
 const [userName, setUserName] = useState('');
 const [collectionName , setCollectionName] = useState('')
@@ -31,7 +30,7 @@ useEffect(() => {
                 if (userDocSnapshot.exists()) {
                     setUserName(userDocSnapshot.data().displayName)
                     setCollectionName(userDocSnapshot.data().collectionName)
-                    setIsAdmin(userDocSnapshot.data().isAdmin)
+                    console.log(userDocSnapshot.data().isAdmin)
                 } else {
                     console.log('User document not found in Firestore');
                 }
@@ -46,21 +45,19 @@ useEffect(() => {
     return () => unsubscribe();
 }, [auth]);
 
+
   return (
     <>
     <hr />
-    <div className='flex justify-between my-10 mx-4'>
-
-        {isAdmin ? <Link to="/dashboard/assigned" className='btn lof-blue text-white'>See Assigned Leads</Link> : 
-        <Link to="/dashboard/contacted" className='btn lof-blue text-white'>See Contacted Leads</Link>}
-        <h1 className='text-2xl font-bold text-center'>New Leads</h1>
+     <div className='flex justify-between my-10 mx-4'>
+        <Link to="/dashboard/newleads" className='btn lof-blue text-white'>See New Leads</Link>
+        <h1 className='text-2xl font-bold text-center'>Contacted Leads</h1>
         <Time />
         </div>
-        {isAdmin ? <NewLeadsAdmin/> : <NewLeadsRep />}
-    
+    <ContactedLeads />
     
     </>
   )
 }
 
-export default DashboardNew
+export default DashboardContacted

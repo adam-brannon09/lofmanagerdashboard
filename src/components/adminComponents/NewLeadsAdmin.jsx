@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore'
-import { db } from '../firebase.config'
+import { db } from '../../firebase.config'
 import { toast } from "react-toastify";
 import { FaRedoAlt } from "react-icons/fa";
 
@@ -52,17 +52,15 @@ function NewLeadsAdmin() {
                  
           const userCollection = salesRepCollections[repEmail];
 
-                const querySnapshot = await getDocs(collection(db, userCollection));
+                const querySnapshot = await getDocs(collection(db, "leads"));
                 const leads = [];
                 querySnapshot.forEach((doc) => {
-                    console.log("lead found");
                     leads.push({ ...doc.data(), id: doc.id });
                     
                 });
                 
                 setLeadNums(leads.length)
                 setAllLeads(leads);
-                console.log("leads set")
                 setLoading(false)
                 
             } catch (error) {

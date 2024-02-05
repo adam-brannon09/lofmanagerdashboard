@@ -1,10 +1,10 @@
-import Logo from '../assets/images/liveOakLogo.png'
+import Logo from '../../assets/images/liveOakLogo.png'
 import { useState } from "react"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase.config';
+import { db } from '../../firebase.config';
 
 function Header() {
     const auth = getAuth();
@@ -41,11 +41,11 @@ function Header() {
         return () => unsubscribe();
     }, [auth]);
     
-
-
+    // Logout function
     const onLogout = () => {
        try{ auth.signOut();
         setSignedIn(false);
+        setUser(null);
         navigate("/");}
         catch(error){
             console.log(error)
@@ -53,11 +53,10 @@ function Header() {
     }
 
 
-
     return (
         <nav className='flex flex-wrap mt-10 mb-10 justify-around bg-base-100'>
            <a href='https://liveoakfiber.com/'> <img src={Logo} alt="Live Oak Fiber" /></a>
-            <h1 className='text-3xl lof-blue-text'>{userName}</h1>
+            {signedIn && <h1 className='text-3xl lof-blue-text'>{userName}</h1>}
             {signedIn && <button className='btn lof-red text-white' onClick={onLogout}>Logout</button>}
             <hr />
         </nav>

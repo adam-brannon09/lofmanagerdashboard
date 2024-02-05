@@ -5,7 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import SignIn from "./pages/SignIn";
 import DashboardNew from "./pages/DashboardNew";
 import DashboardArchived from "./pages/DashboardArchived";
-import Header from "./components/Header"; 
+import DashboardContacted from "./pages/DashboardContacted";
+import Header from "./components/nonUserComponents/Header"; 
 import PrivateRoute from "./components/authComponent/PrivateRoute";
 
 function App() {
@@ -19,8 +20,11 @@ function App() {
         <Route path="/dashboard/newleads" element={<PrivateRoute/>}>
           <Route path="/dashboard/newleads" element={<DashboardNew/>}/>
         </Route>
-        <Route path="/dashboard/archived" element={<PrivateRoute/>}>
-          <Route path="/dashboard/archived" element={<DashboardArchived/>}/>
+        <Route path="/dashboard/assigned" element={<PrivateRoute/>}>
+          <Route path="/dashboard/assigned" element={<DashboardArchived/>}/>
+        </Route>
+        <Route path="/dashboard/contacted" element={<PrivateRoute/>}>
+          <Route path="/dashboard/contacted" element={<DashboardContacted/>}/>
         </Route>
       </Routes>
     </Router>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function NewLeadsTable({allLeads, openModal}) {
+function LeadsTable({allLeads, openModal}) {
   return (
     <>
         <div className="overflow-x-auto">
@@ -48,4 +48,4 @@ function NewLeadsTable({allLeads, openModal}) {
   )
 }
 
-export default NewLeadsTable
+export default LeadsTable

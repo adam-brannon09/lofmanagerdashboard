@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { collection, getDocs } from 'firebase/firestore'
-import { db } from '../firebase.config'
+import { db } from '../../firebase.config'
 
 function Archived() {
   const [allLeads, setAllLeads] = useState([])
