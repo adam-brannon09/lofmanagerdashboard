@@ -27,12 +27,32 @@ function NewLeads() {
         });
       }, [auth]);
 
+      
+
     useEffect(() => {
         const fetchLeads = async () => {
-          if(user){
+           //Determine collection by user
+          // Create a mapping between sales reps and collections
+
+          if(auth.currentUser){
+            const repEmail = auth.currentUser.email;
+              const salesRepCollections = {
+                "aaron@liveoak.com": "aaronPadgett",
+                "byran@liveoak.com": "bryanBennett",
+                "barrett@liveoak.com": "barrettHibbett",
+                "chris@liveoak.com": "chrisWallace",
+                "gabby@liveoak.com": "gabbyHuddleston",
+                "travis@liveoak.com": "travisSelski",
+                "savannah@liveoak.com": "savannahMcquaig"
+            };
+         
             try {
                 setLoading(true)
-                const querySnapshot = await getDocs(collection(db, 'leads'));
+               
+                 
+          const userCollection = salesRepCollections[repEmail];
+
+                const querySnapshot = await getDocs(collection(db, userCollection));
                 const leads = [];
                 querySnapshot.forEach((doc) => {
                     console.log("lead found");
@@ -48,7 +68,7 @@ function NewLeads() {
             } catch (error) {
                 console.error(error);
             }
-        };
+        }
       }
     
         fetchLeads(); // Call the fetchLeads function here
