@@ -4,9 +4,12 @@ import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'fi
 import { db } from '../firebase.config'
 import { toast } from "react-toastify";
 import { FaRedoAlt } from "react-icons/fa";
+import StatusBar from './StatusBar';
+import NewLeadsTable from './NewLeadsTable';
+import Modal from './Modal';
 
 
-function NewLeads() {
+function NewLeadsTwo() {
     const auth = getAuth()
     const [user, setUser] = useState(true)
     const [allLeads, setAllLeads] = useState([])
@@ -162,101 +165,22 @@ function NewLeads() {
         }
       };
 
-      
-
-
-    
 
 
   return (
     <div>
-        <hr />
-        <div className='flex justify-end items-center'>
-        <button className="inline-flex items-center btn btn-ghost" alt="Refresh Leads" onClick={handleRefresh}>Refresh <FaRedoAlt /></button>
-        <p className='text-end mr-6 ml-4'>{leadNums === 0 ? '0 Leads Received' : leadNums > 1 ? `${leadNums} Leads Received` : `${leadNums} Lead Received`}</p>
-        </div>
-        <div className="overflow-x-auto">
-  <table className="table">
-    {/* head */}
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>E-Mail</th>
-        <th>Phone</th>
-        <th>Street</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Zip</th>
-        <th>Account Type</th>
-        <th>Plan Selected</th>
-      </tr>
-    </thead>
-    <tbody>
+       <StatusBar handleRefresh={handleRefresh} leadNums={leadNums}/>
+       <NewLeadsTable allLeads={allLeads} openModal={openModal}/>
+         <Modal 
+         selectedLead={selectedLead} 
+         repAssigned={repAssigned} 
+         handleChange={handleChange} 
+         saveAssignment={saveAssignment} 
+         closeModal={() => document.getElementById('my_modal_2').close()}
+         />
 
-
-      {/* leads will be mapped through and turned into rows. lead notes will be visible in the modal*/}
-
-    {allLeads.map((lead) => (
-      
-        <tr key={lead.id} className='hover cursor-pointer'
-        onClick={() => openModal(lead)}
-        >
-        <td>{`${lead.firstName} ${lead.lastName}`}</td>
-        <td>{lead.email}</td>
-        <td>{lead.phone}</td>
-        <td>{lead.streetAddress}</td>
-        <td>{lead.city}</td>
-        <td>{lead.state}</td>
-        <td>{lead.zipCode}</td>
-        <td>{lead.businessOrResidential}</td>
-        <td>{lead.plan}</td>
-      </tr>
-    ))}
-
-    </tbody>
-  </table>
-</div>
-
-{/* modal */}
-<dialog id="my_modal_2" className="modal">
-  <div className="modal-box">
-    <h3 className="font-bold text-lg">{selectedLead && `${selectedLead.firstName} ${selectedLead.lastName}`}</h3>
-    <hr />
-    {selectedLead && (
-      <>
-        <p>Address: {`${selectedLead.streetAddress}, ${selectedLead.city}, ${selectedLead.state} ${selectedLead.zipCode}`}</p>
-        <p>Email: {selectedLead.email}</p>
-        <p>Phone: {selectedLead.phone}</p>
-        <p>Account Type: {selectedLead.businessOrResidential}</p>
-        <p>Selected Plan: {selectedLead.plan}</p>
-        <p>Notes: {selectedLead.message ? selectedLead.message : `No notes from lead.`}</p>
-        <p>Received: {selectedLead.submittedAt && new Date(selectedLead.submittedAt.toMillis()).toLocaleString()}</p>
-      </>
-    )}
-    <hr />
-    <div className='mt-8'>
-    <label className="form-control w-full max-w-xs">
-  <div className="label">
-    <span className="label-text">Assign To Rep</span>
-  </div>
-  <select 
-  className="select select-bordered"
-  value={repAssigned}
-  onChange={handleChange}>
-    <option value="">Select a Rep to Assign Lead</option>
-    <option value="adam.brannon09@icloud.com">Adam Brannon</option>
-    <option value="amber.brannon@liveoakfiber.com">Amber Brannon</option>
-    <option value="joey.broadway@liveoakfiber.com">Joey Broadway</option>
-  </select>
-  
-</label>
-    </div>
-    <button className='btn lof-blue text-white' onClick={saveAssignment} >Save Assignment</button>
-    <button className="btn lof-red text-white mt-8" onClick={() => document.getElementById('my_modal_2').close()}>Close</button>
-  </div>
-</dialog>
     </div>
   )
 }
 
-export default NewLeads
+export default NewLeadsTwo
