@@ -1,5 +1,5 @@
 import ArchivedLeads from "../components/ArchivedLeads"
-import Time from '../components/Time'
+import Time from '../components/nonUserComponents/Time'
 import { Link } from 'react-router-dom'
 
 function DashboardArchived() {

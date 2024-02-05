@@ -1,34 +1,57 @@
 import { useState, useEffect, useRef } from 'react'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore'
-import { db } from '../firebase.config'
+import { collection, getDoc, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore'
+import { db } from '../../firebase.config'
 import { toast } from "react-toastify";
 import { FaRedoAlt } from "react-icons/fa";
-import StatusBar from './StatusBar';
-import NewLeadsTable from './NewLeadsTable';
-import Modal from './Modal';
+import StatusBar from '../StatusBar';
+import NewLeadsTable from '../NewLeadsTable';
+import RepModal from './RepModal';
 
 
-function NewLeadsTwo() {
+function NewLeadsRep() {
     const auth = getAuth()
-    const [user, setUser] = useState(true)
+    const [user, setUser] = useState(null)
+    const [signedIn, setSignedIn] = useState(false);
+const [userName, setUserName] = useState('');
+
     const [allLeads, setAllLeads] = useState([])
     const [selectedLead, setSelectedLead] = useState(null)
-    const [repAssigned, setRepAssigned] = useState('')
     const [leadNums, setLeadNums] = useState(0)
     const [refreshCounter, setRefreshCounter] = useState(0)
     const [loading, setLoading] = useState(false)
+    const [collectionName , setCollectionName] = useState('')
+
+  
 
     useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
+      // Check if user is signed in
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
           if (user) {
-            setUser(true);  
+              // User is signed in
+              setUser(user);
+              setSignedIn(true);
+              // Fetch user's name from Firestore based on their email
+              try {
+                  const userDocRef = doc(db, 'users', user.email);
+                  const userDocSnapshot = await getDoc(userDocRef);
+                  // If user document exists, set the user's name
+                  if (userDocSnapshot.exists()) {
+                      setUserName(userDocSnapshot.data().displayName)
+                      setCollectionName(userDocSnapshot.data().collectionName)
+                  } else {
+                      console.log('User document not found in Firestore');
+                  }
+              } catch (error) {
+                  console.error('Error fetching user document:', error);
+              }
           } else {
-            setUser(false);
-            console.log('No user is signed in.');
+              setUser(null);
+              setSignedIn(false);
           }
-        });
-      }, [auth]);
+      });
+      return () => unsubscribe();
+  }, [auth]);
 
       
 
@@ -45,6 +68,7 @@ function NewLeadsTwo() {
                 "barrett@liveoak.com": "barrettHibbett",
                 "chris@liveoak.com": "chrisWallace",
                 "gabby@liveoak.com": "gabbyHuddleston",
+                "katy@liveoak.com": "katySarubbi",
                 "travis@liveoak.com": "travisSelski",
                 "savannah@liveoak.com": "savannahMcquaig"
             };
@@ -58,14 +82,12 @@ function NewLeadsTwo() {
                 const querySnapshot = await getDocs(collection(db, userCollection));
                 const leads = [];
                 querySnapshot.forEach((doc) => {
-                    console.log("lead found");
                     leads.push({ ...doc.data(), id: doc.id });
                     
                 });
                 
                 setLeadNums(leads.length)
                 setAllLeads(leads);
-                console.log("leads set")
                 setLoading(false)
                 
             } catch (error) {
@@ -84,63 +106,36 @@ function NewLeadsTwo() {
       };
 
       const handleChange = (e) => {
-        setRepAssigned(e.target.value);
+        setRepAssigned(userName);
         };
 
       const handleRefresh = () => {
         setRefreshCounter((prevCounter) => prevCounter + 1);
       }
 
-      // Send Email Function that Sends an email to the assigned rep when a lead is assigned to them
-      const sendEmail = async () => {
-        if (selectedLead && repAssigned) {
-          const subject = `New Lead Assignment: ${selectedLead.firstName} ${selectedLead.lastName}`;
-          const body = `
-            You have been assigned a new lead. Please contact them as soon as possible.
-            Lead Details:
-            Name: ${selectedLead.firstName} ${selectedLead.lastName}
-            Address: ${selectedLead.streetAddress}, ${selectedLead.city}, ${selectedLead.state} ${selectedLead.zipCode}
-            Email: ${selectedLead.email}
-            Phone: ${selectedLead.phone}
-            Account Type: ${selectedLead.businessOrResidential}
-            Selected Plan: ${selectedLead.plan}
-            Notes: ${selectedLead.message}
-            Received: ${selectedLead.submittedAt && new Date(selectedLead.submittedAt.toMillis()).toLocaleString()}
-    
-            Assigned to Rep: ${repAssigned}
-          `;
-    
-          const mailtoLink = `mailto:${repAssigned}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-          // Open default email client with pre-filled details
-          window.location.href = mailtoLink;
-        } else {
-          toast.error('Please select a lead and a sales rep before sending the email.');
-        }
-      };
-
 
 
       const saveAssignment = async () => {
         setLoading(true)
         try {
-          // Check if a sales rep is selected
-          if (repAssigned) {
-            // Add the lead to the "archived" collection with sales rep and timestamp
-            const archivedLead = {
+          if (userName) {
+          
+            // Add the lead to the "Contacted" collection with sales rep and timestamp
+            const contactedLead = {
               ...selectedLead,
-              salesRep: repAssigned,
-              archivedTimestamp: serverTimestamp(),
-            };
+              salesRep: userName,
+              contactedTimestamp: serverTimestamp(),
+            }
+          
     
             // Add the lead to the "archived" collection
-            const archivedLeadRef = await addDoc(collection(db, 'archived'), archivedLead);
+            const contactedLeadRef = await addDoc(collection(db, `${collectionName}contacted`), contactedLead);
     
-            console.log('Lead assigned and archived with ID:', archivedLeadRef.id);
+            console.log('Lead assigned and archived with ID:', contactedLeadRef.id);
             // Delete the lead from the "leads" collection
-            await deleteDoc(doc(db, 'leads', selectedLead.id));
+            await deleteDoc(doc(db, `${collectionName}`, selectedLead.id));
 
-            console.log('Lead deleted from "leads" collection.');
+            console.log(`Lead deleted from ${collectionName} with ID: ${selectedLead.id}`);
             
             // Update the state to remove the archived lead from the table
             setAllLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== selectedLead.id));
@@ -151,12 +146,10 @@ function NewLeadsTwo() {
             // Close the modal
             document.getElementById('my_modal_2').close();
             // Show a toast message
-            toast.success('Lead assigned and archived successfully!');
-            // Send an email to the assigned rep
-            sendEmail();
+            toast.success('Lead marked as contacted and archived successfully!');
+            
 
           } else {
-            toast.error('Please select a sales rep before saving assignment.');
             console.error('Please select a sales rep before saving assignment.');
           }
         } catch (error) {
@@ -171,9 +164,9 @@ function NewLeadsTwo() {
     <div>
        <StatusBar handleRefresh={handleRefresh} leadNums={leadNums}/>
        <NewLeadsTable allLeads={allLeads} openModal={openModal}/>
-         <Modal 
+         <RepModal 
          selectedLead={selectedLead} 
-         repAssigned={repAssigned} 
+        //  repAssigned={repAssigned} 
          handleChange={handleChange} 
          saveAssignment={saveAssignment} 
          closeModal={() => document.getElementById('my_modal_2').close()}
@@ -183,4 +176,4 @@ function NewLeadsTwo() {
   )
 }
 
-export default NewLeadsTwo
+export default NewLeadsRep

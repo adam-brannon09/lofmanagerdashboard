@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom'
-import { useAuthStatus } from '../hooks/useAuthStatus'
-import Loading from './Loading'
+import { useAuthStatus } from '../../hooks/useAuthStatus'
+import Loading from '../Loading'
 
 // only allows logged in users to access the route example: /note
 const PrivateRoute = () => {

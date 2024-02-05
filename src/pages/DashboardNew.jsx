@@ -1,8 +1,8 @@
 import React from 'react'
-import NewLeads from '../components/NewLeads'
-import Time from '../components/Time'
+import NewLeads from '../components/NewLeadsAdmin'
+import Time from '../components/nonUserComponents/Time'
 import { Link } from 'react-router-dom'
-import NewLeadsTwo from '../components/NewLeadsTwo'
+import NewLeadsRep from '../components/repComponents/NewLeadsRep'
 
 function DashboardNew() {
 
@@ -16,7 +16,7 @@ function DashboardNew() {
         <Time />
         </div>
     {/* <NewLeads /> */}
-    <NewLeadsTwo />
+    <NewLeadsRep />
     </>
   )
 }

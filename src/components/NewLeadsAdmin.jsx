@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { FaRedoAlt } from "react-icons/fa";
 
 
-function NewLeads() {
+function NewLeadsAdmin() {
     const auth = getAuth()
     const [user, setUser] = useState(true)
     const [allLeads, setAllLeads] = useState([])
@@ -259,4 +259,4 @@ function NewLeads() {
   )
 }
 
-export default NewLeads
+export default NewLeadsAdmin
