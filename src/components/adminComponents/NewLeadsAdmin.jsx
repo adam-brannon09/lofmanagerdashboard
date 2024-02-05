@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore'
+import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp, getDoc } from 'firebase/firestore'
 import { db } from '../../firebase.config'
 import { toast } from "react-toastify";
 import { FaRedoAlt } from "react-icons/fa";
+import Modal from './Modal'
+import LeadsTableAdmin from './LeadsTableAdmin'
+import StatusBar from '../nonUserComponents/StatusBar';
 
 
 function NewLeadsAdmin() {
@@ -15,17 +18,38 @@ function NewLeadsAdmin() {
     const [leadNums, setLeadNums] = useState(0)
     const [refreshCounter, setRefreshCounter] = useState(0)
     const [loading, setLoading] = useState(false)
+    const [signedIn, setSignedIn] = useState(false);
+    const [userName, setUserName] = useState('');
 
     useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
+      // Check if user is signed in
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
           if (user) {
-            setUser(true);  
+              // User is signed in
+              setUser(user);
+              setSignedIn(true);
+              // Fetch user's name from Firestore based on their email
+              try {
+                  const userDocRef = doc(db, 'users', user.email);
+                  const userDocSnapshot = await getDoc(userDocRef);
+                  // If user document exists, set the user's name
+                  if (userDocSnapshot.exists()) {
+                      setUserName(userDocSnapshot.data().displayName)
+                      console.log(`${userDocSnapshot.data().displayName} is signed in.`)
+                      
+                  } else {
+                      console.log('User document not found in Firestore');
+                  }
+              } catch (error) {
+                  console.error('Error fetching user document:', error);
+              }
           } else {
-            setUser(false);
-            console.log('No user is signed in.');
+              setUser(null);
+              setSignedIn(false);
           }
-        });
-      }, [auth]);
+      });
+      return () => unsubscribe();
+  }, [auth]);
 
       
 
@@ -40,6 +64,7 @@ function NewLeadsAdmin() {
                 "aaron@liveoak.com": "aaronPadgett",
                 "byran@liveoak.com": "bryanBennett",
                 "barrett@liveoak.com": "barrettHibbett",
+                "katy@liveoak.com": "katySarubbi",
                 "chris@liveoak.com": "chrisWallace",
                 "gabby@liveoak.com": "gabbyHuddleston",
                 "travis@liveoak.com": "travisSelski",
@@ -52,10 +77,11 @@ function NewLeadsAdmin() {
                  
           const userCollection = salesRepCollections[repEmail];
 
-                const querySnapshot = await getDocs(collection(db, "leads"));
+                const querySnapshot = await getDocs(collection(db, "newLeads"));
                 const leads = [];
                 querySnapshot.forEach((doc) => {
                     leads.push({ ...doc.data(), id: doc.id });
+                    leads.sort((a, b) => b.submittedAt.toMillis() - a.submittedAt.toMillis());
                     
                 });
                 
@@ -122,20 +148,20 @@ function NewLeadsAdmin() {
           // Check if a sales rep is selected
           if (repAssigned) {
             // Add the lead to the "archived" collection with sales rep and timestamp
-            const archivedLead = {
+            const assignedLead = {
               ...selectedLead,
               salesRep: repAssigned,
-              archivedTimestamp: serverTimestamp(),
+              assignedTimestamp: serverTimestamp(),
             };
     
             // Add the lead to the "archived" collection
-            const archivedLeadRef = await addDoc(collection(db, 'archived'), archivedLead);
+            const assignedLeadRef = await addDoc(collection(db, 'assignedLeads'), assignedLead);
     
-            console.log('Lead assigned and archived with ID:', archivedLeadRef.id);
+            console.log('Lead assigned and archived with ID:', assignedLeadRef.id);
             // Delete the lead from the "leads" collection
-            await deleteDoc(doc(db, 'leads', selectedLead.id));
+            await deleteDoc(doc(db, 'newLeads', selectedLead.id));
 
-            console.log('Lead deleted from "leads" collection.');
+            console.log('Lead deleted from "newLeads" collection.');
             
             // Update the state to remove the archived lead from the table
             setAllLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== selectedLead.id));
@@ -169,90 +195,10 @@ function NewLeadsAdmin() {
   return (
     <div>
         <hr />
-        <div className='flex justify-end items-center'>
-        <button className="inline-flex items-center btn btn-ghost" alt="Refresh Leads" onClick={handleRefresh}>Refresh <FaRedoAlt /></button>
-        <p className='text-end mr-6 ml-4'>{leadNums === 0 ? '0 Leads Received' : leadNums > 1 ? `${leadNums} Leads Received` : `${leadNums} Lead Received`}</p>
-        </div>
-        <div className="overflow-x-auto">
-  <table className="table">
-    {/* head */}
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>E-Mail</th>
-        <th>Phone</th>
-        <th>Street</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Zip</th>
-        <th>Account Type</th>
-        <th>Plan Selected</th>
-      </tr>
-    </thead>
-    <tbody>
+        <StatusBar handleRefresh={handleRefresh} leadNums={leadNums}/>
+        <LeadsTableAdmin allLeads={allLeads} openModal={openModal}/>
 
-
-      {/* leads will be mapped through and turned into rows. lead notes will be visible in the modal*/}
-
-    {allLeads.map((lead) => (
-      
-        <tr key={lead.id} className='hover cursor-pointer'
-        onClick={() => openModal(lead)}
-        >
-        <td>{`${lead.firstName} ${lead.lastName}`}</td>
-        <td>{lead.email}</td>
-        <td>{lead.phone}</td>
-        <td>{lead.streetAddress}</td>
-        <td>{lead.city}</td>
-        <td>{lead.state}</td>
-        <td>{lead.zipCode}</td>
-        <td>{lead.businessOrResidential}</td>
-        <td>{lead.plan}</td>
-      </tr>
-    ))}
-
-    </tbody>
-  </table>
-</div>
-
-{/* modal */}
-<dialog id="my_modal_2" className="modal">
-  <div className="modal-box">
-    <h3 className="font-bold text-lg">{selectedLead && `${selectedLead.firstName} ${selectedLead.lastName}`}</h3>
-    <hr />
-    {selectedLead && (
-      <>
-        <p>Address: {`${selectedLead.streetAddress}, ${selectedLead.city}, ${selectedLead.state} ${selectedLead.zipCode}`}</p>
-        <p>Email: {selectedLead.email}</p>
-        <p>Phone: {selectedLead.phone}</p>
-        <p>Account Type: {selectedLead.businessOrResidential}</p>
-        <p>Selected Plan: {selectedLead.plan}</p>
-        <p>Notes: {selectedLead.message ? selectedLead.message : `No notes from lead.`}</p>
-        <p>Received: {selectedLead.submittedAt && new Date(selectedLead.submittedAt.toMillis()).toLocaleString()}</p>
-      </>
-    )}
-    <hr />
-    <div className='mt-8'>
-    <label className="form-control w-full max-w-xs">
-  <div className="label">
-    <span className="label-text">Assign To Rep</span>
-  </div>
-  <select 
-  className="select select-bordered"
-  value={repAssigned}
-  onChange={handleChange}>
-    <option value="">Select a Rep to Assign Lead</option>
-    <option value="adam.brannon09@icloud.com">Adam Brannon</option>
-    <option value="amber.brannon@liveoakfiber.com">Amber Brannon</option>
-    <option value="joey.broadway@liveoakfiber.com">Joey Broadway</option>
-  </select>
-  
-</label>
-    </div>
-    <button className='btn lof-blue text-white' onClick={saveAssignment} >Save Assignment</button>
-    <button className="btn lof-red text-white mt-8" onClick={() => document.getElementById('my_modal_2').close()}>Close</button>
-  </div>
-</dialog>
+<Modal selectedLead={selectedLead} repAssigned={repAssigned} handleChange={handleChange} saveAssignment={saveAssignment} />
     </div>
   )
 }

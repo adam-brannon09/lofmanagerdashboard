@@ -1,6 +1,6 @@
 import React from 'react'
 
-function RepModal({selectedLead, saveAssignment}) {
+function Modal({selectedLead, repAssigned, handleChange, saveAssignment}) {
   return (
     <>
         <dialog id="my_modal_2" className="modal">
@@ -15,12 +15,19 @@ function RepModal({selectedLead, saveAssignment}) {
         <p>Account Type: {selectedLead.businessOrResidential}</p>
         <p>Selected Plan: {selectedLead.plan}</p>
         <p>Notes: {selectedLead.message ? selectedLead.message : `No notes from lead.`}</p>
-        <p>Received: {selectedLead.submittedAt && new Date(selectedLead.submittedAt.toMillis()).toLocaleString()}</p>
+        <p>Recieved: {new Date(selectedLead.submittedAt.toMillis()).toLocaleString()}</p>
+        <p>Assigned: {selectedLead.assignedTimestamp && new Date(selectedLead.assignedTimestamp.toMillis()).toLocaleString()}</p>
+        {selectedLead.salesRep? <p>Rep Assigned: {selectedLead.salesRep}</p> : <></>}
       </>
     )}
     <hr />
-    
-    <button className='btn lof-blue text-white mr-4 border-none' onClick={saveAssignment} >Mark Lead As Contacted</button>
+    <div className='mt-8'>
+    <label className="form-control w-full max-w-xs">
+  
+  
+  
+</label>
+    </div>
     <button className="btn lof-red text-white mt-8" onClick={() => document.getElementById('my_modal_2').close()}>Close</button>
   </div>
 </dialog>
@@ -28,4 +35,4 @@ function RepModal({selectedLead, saveAssignment}) {
   )
 }
 
-export default RepModal
+export default Modal

@@ -1,9 +1,9 @@
-import ArchivedLeads from "../components/adminComponents/ArchivedLeads"
+import AssignedLeads from "../components/adminComponents/AssignedLeads"
 import ContactedLeads from "../components/repComponents/ContactedLeads"
 import Time from '../components/nonUserComponents/Time'
 import { Link } from 'react-router-dom'
 
-function DashboardArchived() {
+function DashboardAssigned() {
   return (
     <>
     <hr />
@@ -12,9 +12,9 @@ function DashboardArchived() {
         <h1 className='text-2xl font-bold text-center'>Assigned Leads</h1>
         <Time />
         </div>
-    <ArchivedLeads />
+    <AssignedLeads />
     </>
   )
 }
 
-export default DashboardArchived
+export default DashboardAssigned

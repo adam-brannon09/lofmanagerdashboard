@@ -55,7 +55,6 @@ function ContactedLeads() {
     const fetchLeads = async () => {
         setLoading(true)
         try {
-          console.log(collectionName)
             const querySnapshot = await getDocs(collection(db,`${collectionName}Contacted`));
             const leads = [];
             querySnapshot.forEach((doc) => {

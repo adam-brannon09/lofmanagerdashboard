@@ -3,7 +3,6 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { collection, getDoc, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../../firebase.config'
 import { toast } from "react-toastify";
-import { FaRedoAlt } from "react-icons/fa";
 import StatusBar from '../nonUserComponents/StatusBar';
 import LeadsTable from '../nonUserComponents/LeadsTable';
 import RepModal from './RepModal';
@@ -21,6 +20,7 @@ const [userName, setUserName] = useState('');
     const [refreshCounter, setRefreshCounter] = useState(0)
     const [loading, setLoading] = useState(false)
     const [collectionName , setCollectionName] = useState('')
+   
 
   
 
@@ -105,10 +105,10 @@ const [userName, setUserName] = useState('');
         document.getElementById('my_modal_2').showModal();
       };
 
-      const handleChange = (e) => {
-        setRepAssigned(userName);
-        };
+     
+    
 
+      
       const handleRefresh = () => {
         setRefreshCounter((prevCounter) => prevCounter + 1);
       }
@@ -167,7 +167,7 @@ const [userName, setUserName] = useState('');
          <RepModal 
          selectedLead={selectedLead} 
         //  repAssigned={repAssigned} 
-         handleChange={handleChange} 
+        //  handleChange={handleChange} 
          saveAssignment={saveAssignment} 
          closeModal={() => document.getElementById('my_modal_2').close()}
          />
