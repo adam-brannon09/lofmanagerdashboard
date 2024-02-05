@@ -166,8 +166,6 @@ const [userName, setUserName] = useState('');
        <LeadsTable allLeads={allLeads} openModal={openModal}/>
          <RepModal 
          selectedLead={selectedLead} 
-        //  repAssigned={repAssigned} 
-        //  handleChange={handleChange} 
          saveAssignment={saveAssignment} 
          closeModal={() => document.getElementById('my_modal_2').close()}
          />
