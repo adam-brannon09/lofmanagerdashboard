@@ -16,6 +16,9 @@
 
 Welcome to the Live Oak Fiber Lead Dashboard, a user-friendly tool designed for efficient lead management. This dashboard provides a centralized view of captured leads from a [custom form](https://live-oak-form.vercel.app/), displaying crucial information such as name, email, phone number, address, lead message, and creation date. Its intuitive interface ensures easy navigation. Once leads are assigned to sales reps, they are separated into another list displaying the lead information, the sales rep assigned, and the time they were assigned. The process is further streamlined with an automatically generated email prompt, enabling managers to add personalized comments before sending. 
 
+*New Features*
+The information collection form has been upgraded allowing each sales team member to have a unique URL. This upgrade enables lead data to be stored in sales reps individual Firestore Database collection. This allows team members to log in to the dashboard and easily follow up with their acquired leads."
+
 
 ## Quick Links
 
