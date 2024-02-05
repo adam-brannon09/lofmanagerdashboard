@@ -56,7 +56,7 @@ function Header() {
     return (
         <nav className='flex flex-wrap mt-10 mb-10 justify-around bg-base-100'>
            <a href='https://liveoakfiber.com/'> <img src={Logo} alt="Live Oak Fiber" /></a>
-            {signedIn && <h1 className='text-3xl lof-blue-text'>{userName}</h1>}
+            {signedIn ? <h1 className='text-3xl lof-blue-text'>{userName}</h1> : <h1 className='text-3xl lof-blue-text'>Lead Dashboard</h1>}
             {signedIn && <button className='btn lof-red text-white' onClick={onLogout}>Logout</button>}
             <hr />
         </nav>

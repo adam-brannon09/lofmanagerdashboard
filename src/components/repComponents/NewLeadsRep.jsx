@@ -129,6 +129,7 @@ const [userName, setUserName] = useState('');
           
     
             // Add the lead to the "archived" collection
+            //Collection name is determined by the user's collectionName which is assigned to the user in firestore
             const contactedLeadRef = await addDoc(collection(db, `${collectionName}Contacted`), contactedLead);
     
             console.log('Lead assigned and archived with ID:', contactedLeadRef.id);
